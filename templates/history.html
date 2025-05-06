@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merao Traffic Violation Report - Complaint History</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Merao Report Traffic Violation</h2>
+        </div>
+
+        <div class="card navigation">
+            <a href="{{ url_for('index') }}" class="nav-button">
+                <i class="fas fa-clipboard-list"></i>
+                Register Complaint
+            </a>
+            <a href="{{ url_for('history') }}" class="nav-button active">
+                <i class="fas fa-history"></i>
+                Complaint History
+            </a>
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-button">
+                <i class="fas fa-user-cog"></i>
+                Admin Dashboard
+            </a>
+        </div>
+
+        <div class="card history-section">
+            {% if not complaints %}
+                <div class="empty-history-message">
+                    <i class="fas fa-clipboard icon"></i>
+                    <h3>No Complaints Reported Yet</h3>
+                    <p>Report your first traffic violation using the "Register Complaint" tab.</p>
+                </div>
+            {% else %}
+                {% for complaint in complaints %}
+                <div class="complaint-item">
+                    <div class="item-header">
+                        <strong>Complaint ID:</strong> {{ complaint['complaint_id'] | default('N/A') }}<br>
+                        <strong>Vehicle No:</strong> {{ complaint['vehicle_no'] | default('N/A') }}<br>
+                        <strong>Status:</strong> {{ complaint['status'] | default('N/A') | capitalize }}
+                    </div>
+                    <div class="item-details">
+                        <p><strong>Violation Type:</strong> {{ complaint['violation_type'] | default('N/A') }}</p>
+                        <p><strong>Location:</strong> {{ complaint['location'] | default('N/A') }}</p>
+                        <div class="item-date-time">
+                             <div class="item-date">
+                                  <i class="fas fa-calendar-alt"></i> {{ complaint['date'] | default('N/A') }}
+                             </div>
+                             <div class="item-time">
+                                 <i class="fas fa-clock"></i> {{ complaint['time'] | default('N/A') }}
+                             </div>
+                        </div>
+                         <p><strong>State:</strong> {{ complaint['state'] | default('N/A') }}</p>
+                        <p><strong>Comment:</strong> {{ complaint['comment'] | default('N/A') }}</p>
+                        {% if complaint['file_path'] %}
+                            <p>
+                                <strong>Media:</strong>
+                                <a href="{{ url_for('static', filename=complaint['file_path']) }}" target="_blank">View Media</a>
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
