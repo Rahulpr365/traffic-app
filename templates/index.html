@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merao Traffic Violation Report - Register Complaint</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Merao Report Traffic Violation</h2>
+        </div>
+
+        <div class="card navigation">
+            <a href="{{ url_for('index') }}" class="nav-button active">
+                <i class="fas fa-clipboard-list"></i>
+                Register Complaint
+            </a>
+            <a href="{{ url_for('history') }}" class="nav-button">
+                <i class="fas fa-history"></i>
+                Complaint History
+            </a>
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-button">
+                <i class="fas fa-user-cog"></i>
+                Admin Dashboard
+            </a>
+        </div>
+
+        <div class="card form-section">
+            <div class="media-upload">
+                <button type="button" class="media-button" id="camera-button">
+                    <i class="fas fa-camera"></i>
+                    Camera
+                </button>
+                <button type="button" class="media-button" id="video-button">
+                    <i class="fas fa-video"></i>
+                    Video
+                </button>
+            </div>
+
+            <form id="violation-form" method="post" action="{{ url_for('submit_complaint') }}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="vehicle-no">Vehicle No. (Max. 10 characters)*</label>
+                    <input type="text" id="vehicle-no" name="vehicle-no" placeholder="Enter Vehicle No." maxlength="10" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="violation-type">Violation Type</label>
+                    <select id="violation-type" name="violation-type">
+                        <option value="">Select Violation</option>
+                        <option value="unauthorised-parking">Unauthorised Parking</option>
+                        <option value="disobeying-lane">Disobeying Lane Traffic</option>
+                        <option value="no-helmet">Driving without Helmet</option>
+                        <option value="no-seatbelt">Driving without Safety Belt</option>
+                        <option value="triple-riding">Triple riding on two Wheeler</option>
+                        <option value="mobile-driving">Using Mobile Phone while Driving</option>
+                        <option value="red-light-jump">Driving Dangerously by Jumping a Red Light</option>
+                        <option value="rash-driving">Rash and Negligent Driving</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="offence-location">Offence Location (Max 250 characters)</label>
+                    <textarea id="offence-location" name="offence-location" maxlength="250" rows="3"></textarea>
+                    <button type="button" id="fetch-location-btn" class="fetch-button">
+                         <i class="fas fa-map-marker-alt"></i>
+                         Fetch Location
+                    </button>
+                </div>
+
+                <div class="form-group date-time-group">
+                    <div class="date-input">
+                         <label for="date">Date</label>
+                         <input type="date" id="date" name="date">
+                    </div>
+                   <div class="time-input">
+                        <label for="time">Time</label>
+                        <input type="time" id="time" name="time">
+                   </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="state">State</label>
+                    <input type="text" id="state" name="state" value="Kerala" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="comment">Comment (Max 500 characters)</label>
+                    <textarea id="comment" name="comment" maxlength="500" rows="4"></textarea>
+                </div>
+
+                <input type="file" name="media" accept="image/*,video/*" style="display: none;" id="media-upload-input">
+
+                <input type="hidden" id="latitude" name="latitude">
+                <input type="hidden" id="longitude" name="longitude">
+
+                <button type="submit" class="register-button">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
